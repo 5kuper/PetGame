@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://bgs8nuyp85ndt"]
+
+[ext_resource type="PackedScene" uid="uid://devkajfoh0xxs" path="res://scenes/UI/coin_counter.tscn" id="2_ctxkw"]
+
+[sub_resource type="GDScript" id="GDScript_8uhme"]
+script/source = "extends Node2D
+
+func update_happiness(val: int):
+	$Statusbars/Happiness.value = val
+
+func update_satiety(val: int):
+	$Statusbars/Satiety.value = val
+
+func update_coins(val: int):
+	$CoinCounter.update(val)
+"
+
+[sub_resource type="Gradient" id="Gradient_72bx6"]
+colors = PackedColorArray(1, 0.870588, 0.517647, 1, 0.807843, 1, 0.529412, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vo8yn"]
+gradient = SubResource("Gradient_72bx6")
+width = 250
+height = 30
+
+[sub_resource type="Gradient" id="Gradient_6gcn1"]
+colors = PackedColorArray(0.890196, 0.329412, 0.560784, 1, 0.890196, 0.321569, 0.321569, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0yogb"]
+gradient = SubResource("Gradient_6gcn1")
+width = 250
+height = 30
+
+[node name="TopPanel" type="Node2D"]
+position = Vector2(20, 20)
+script = SubResource("GDScript_8uhme")
+
+[node name="Statusbars" type="Node2D" parent="."]
+
+[node name="Happiness" type="TextureProgressBar" parent="Statusbars"]
+offset_right = 250.0
+offset_bottom = 30.0
+value = 100.0
+texture_progress = SubResource("GradientTexture2D_vo8yn")
+
+[node name="Satiety" type="TextureProgressBar" parent="Statusbars"]
+offset_top = 40.0
+offset_right = 250.0
+offset_bottom = 70.0
+value = 100.0
+texture_progress = SubResource("GradientTexture2D_0yogb")
+
+[node name="CoinCounter" parent="." instance=ExtResource("2_ctxkw")]
+position = Vector2(25, 110)

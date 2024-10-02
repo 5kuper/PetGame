@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://csi2fpayyd4u0"]
+
+[ext_resource type="Script" path="res://scripts/domain/game.gd" id="1_yhweu"]
+[ext_resource type="Script" path="res://scripts/domain/food_manager.gd" id="2_w5w7j"]
+[ext_resource type="Script" path="res://scripts/utils/mouse/mouse_attaching.gd" id="3_mcu8d"]
+[ext_resource type="Script" path="res://scripts/utils/shaking.gd" id="4_jw7q4"]
+[ext_resource type="PackedScene" uid="uid://daj8fkhgw53eq" path="res://scenes/cat.tscn" id="5_q7k3x"]
+[ext_resource type="PackedScene" uid="uid://bgs8nuyp85ndt" path="res://scenes/UI/top_panel.tscn" id="9_nx4b6"]
+[ext_resource type="Script" path="res://scripts/utils/button_holder.gd" id="11_ephu0"]
+[ext_resource type="Texture2D" uid="uid://bntxiyg5fejkx" path="res://sprites/food.png" id="12_hd42u"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_yhweu")
+
+[node name="Managers" type="Node" parent="."]
+
+[node name="Food" type="Node" parent="Managers"]
+script = ExtResource("2_w5w7j")
+_mouse_attaching_script = ExtResource("3_mcu8d")
+_shaking_script = ExtResource("4_jw7q4")
+
+[node name="Cat" parent="." instance=ExtResource("5_q7k3x")]
+
+[node name="Controls" type="Node" parent="."]
+
+[node name="TopPanel" parent="Controls" instance=ExtResource("9_nx4b6")]
+
+[node name="Buttons" type="Node" parent="Controls"]
+
+[node name="Play" type="Button" parent="Controls/Buttons"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -120.0
+offset_right = 170.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "Play"
+
+[node name="Food" type="TextureButton" parent="Controls/Buttons" node_paths=PackedStringArray("_holded_node")]
+offset_left = 1090.0
+offset_top = 530.0
+offset_right = 1260.0
+offset_bottom = 700.0
+script = ExtResource("11_ephu0")
+_holded_node = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite2D" parent="Controls/Buttons/Food"]
+position = Vector2(80, 80)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("12_hd42u")
+
+[connection signal="coins_updated" from="." to="Controls/TopPanel" method="update_coins"]
+[connection signal="pet_feeding" from="Managers/Food" to="Cat" method="feed"]
+[connection signal="readiness_changed" from="Managers/Food" to="Cat" method="need_open_mouth"]
+[connection signal="selection_changed" from="Managers/Food" to="." method="_on_food_selection_changed"]
+[connection signal="selection_changed" from="Managers/Food" to="Cat" method="need_wait_food"]
+[connection signal="happiness_updated" from="Cat" to="Controls/TopPanel" method="update_happiness"]
+[connection signal="mouse_entered" from="Cat" to="Managers/Food" method="_on_pet_mouse_entered"]
+[connection signal="mouse_exited" from="Cat" to="Managers/Food" method="_on_pet_mouse_exited"]
+[connection signal="pressed" from="Cat" to="." method="_on_pet_pressed"]
+[connection signal="pressed" from="Cat" to="Managers/Food" method="_on_pet_pressed"]
+[connection signal="satiety_updated" from="Cat" to="Controls/TopPanel" method="update_satiety"]
+[connection signal="pressed" from="Controls/Buttons/Play" to="Cat" method="play"]
+[connection signal="pressed_holding" from="Controls/Buttons/Food" to="Managers/Food" method="select_food"]

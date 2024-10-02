@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://daj8fkhgw53eq"]
+
+[ext_resource type="Script" path="res://scripts/domain/pet.gd" id="1_1q70h"]
+[ext_resource type="Script" path="res://scripts/domain/pet_appear.gd" id="2_u4ane"]
+[ext_resource type="Texture2D" uid="uid://bgph7aduksf6r" path="res://sprites/cat/cat_idle.png" id="3_3eusc"]
+[ext_resource type="Texture2D" uid="uid://b1puhrmjujnlw" path="res://sprites/cat/cat_feeding.png" id="4_xshfl"]
+[ext_resource type="Script" path="res://scripts/utils/mouse/mouse_approaching.gd" id="5_r6pwh"]
+
+[node name="Cat" type="Node"]
+script = ExtResource("1_1q70h")
+
+[node name="Appear" type="Node" parent="."]
+script = ExtResource("2_u4ane")
+_idle_texture = ExtResource("3_3eusc")
+_feeding_texture = ExtResource("4_xshfl")
+
+[node name="Body" type="CharacterBody2D" parent="Appear"]
+position = Vector2(650, 360)
+script = ExtResource("5_r6pwh")
+
+[node name="Sprite" type="Sprite2D" parent="Appear/Body"]
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("3_3eusc")
+
+[node name="Button" type="TextureButton" parent="Appear/Body"]
+offset_left = -249.0
+offset_top = -222.0
+offset_right = -209.0
+offset_bottom = -182.0
+scale = Vector2(12.6028, 10.5474)
+
+[node name="UnhappyTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="UnhappyTimer" to="." method="_on_unhappy_timer_timeout"]

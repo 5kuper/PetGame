@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://devkajfoh0xxs"]
+
+[ext_resource type="Texture2D" uid="uid://xu88tdmtloxd" path="res://sprites/coin.png" id="1_c5fyy"]
+
+[sub_resource type="GDScript" id="GDScript_q5kop"]
+script/source = "extends Node2D
+
+func update(val: int):
+	$Label.text = str(val)
+"
+
+[node name="CoinCounter" type="Node2D"]
+script = SubResource("GDScript_q5kop")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 25.0
+offset_top = -22.0
+offset_right = 65.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 30
+text = "0"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_c5fyy")
